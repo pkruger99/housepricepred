@@ -1,17 +1,17 @@
 #################################
-# Tutorial 5: Data Manipulation #
+# Data Wrangling 
 #################################
 
 ## Packages
 library(tidyverse) # Load our packages here
 #library(broom) # If not installed - function for installing?
 
-?tidyverse
-browseVignettes(package = "tidyverse")
+# ?tidyverse
+# browseVignettes(package = "tidyverse")
 
 ## Assign data
 # The tidyverse has its own package for reading in data: readr
-?readr
+# ?readr
 
 # readr uses a very similar format to base r functions. For example, 
 # we can read in a csv file using the read_csv() function, which is 
