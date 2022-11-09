@@ -31,7 +31,7 @@ output_stargazer <- function(outputFile, appendVal=TRUE, ...) {
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 
-
+getwd()
 ?tidyverse
 browseVignettes(package = "tidyverse")
 
@@ -43,17 +43,17 @@ browseVignettes(package = "tidyverse")
 # we can read in a csv file using the read_csv() function, which is 
 # similar to base R's read.csv() function.
 
-###----------------------tutorial exercises--------------------------
+dat <- read.csv("https://raw.githubusercontent.com/gedeck/practical-statistics-for-data-scientists/master/data/house_sales.csv",
+                sep  = "\t")
 
-###----------------------tutorial exercises--------------------------
-#dat <- read_csv("https://raw.githubusercontent.com/gedeck/practical-statistics-for-data-scientists/master/data/house_sales.csv")
-#write_csv(dat)
+#dat <- read_table("data/house_sales_mod.csv",  col_names = TRUE)
+dat <- dat %>% mutate(Ddate = as.Date(DocumentDate)) %>%
+  mutate(ym_date = as.Date(ym)) 
 
-dat <- read_table("data/house_sales_mod.csv",  col_names = TRUE)
-dat <- dat %>% mutate(Ddate = as.Date(DocumentDate))
-
-saveRDS(dat, "/Data/house_sales.rds")
+dataPath <- "../Data/house_sales.rds"
+saveRDS(dat, dataPath)
 class(dat)
+dat<- readRDS(dataPath)
 
 dat  %>% View()
 
@@ -72,21 +72,18 @@ dat %>% ggplot(aes(SalePrice, AdjSalePrice)) +
 dat %>% mutate(area = ZipCode %/%100  ) %>%
   group_by(area) %>%
   summarise(mean = mean(AdjSalePrice)) %>%
-  #glimpse()
   ggplot() +
   geom_point(aes(area, mean)) 
 
 dat %>% 
   group_by(ZipCode) %>%
   summarise(MeanAdjSalePrice = mean(AdjSalePrice)) %>%
-  #glimpse()
   ggplot() +
   geom_point(aes(ZipCode, MeanAdjSalePrice)) 
 
 dat %>% 
   group_by(ZipCode) %>%
   summarise(MeanAdjSalePrice = mean(AdjSalePrice)) %>%
-  #glimpse()
   ggplot() +
   geom_point(aes(ZipCode, MeanAdjSalePrice)) 
 ggsave("../ZipCode_mean.pdf")
