@@ -38,7 +38,7 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 dat <- readRDS("../Data/train.rds")
 View(dat)
 
-mod1 <- lm(AdjSalePrice ~ Bathrooms, data = dat)
+mod1 <- lm(AdjSalePrice ~ BldgGrade, data = dat)
 
 summary(mod1)
 
@@ -76,8 +76,8 @@ mod2 <- lm(AdjSalePrice ~ BldgGrade + SqFtTotLiving, data = dat)
 summary(mod2)
 
 dat %>% ggplot( aes(x=dat$SqFtTotLiving, y=AdjSalePrice,  group = BldgGrade)) +
-  geom_point(alpha = 0.5, aes(colour = BldgGrade)) +
-  geom_line(data = dat_add, aes(y = .fitted, colour = BldgGrade)) # we change our data to the fitted values of the additive model
+  geom_point(alpha = 0.5, aes(colour = as.factor(BldgGrade))) +
+  geom_line(data = dat_add, aes(y = .fitted, as.factor(BldgGrade))) # we change our data to the fitted values of the additive model
 
 ggsave("../Results/sqftLiving.png")
 
@@ -85,4 +85,6 @@ output_stargazer("../Results/TotLiving_BldgGrade.tex", appendVal = FALSE, mod2,
                  title="Adjusted Sale Price, Living Space and Building Grade",
                  label="tab:SqFtTotLiving_bldGrade",  digits = 6
 )
+
+stargazer::stargazer(mod1, mod2, type = "text", title = "Price and living space, building grade")
 
