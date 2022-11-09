@@ -37,3 +37,51 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 dat <- readRDS("../Data/train.rds")
 View(dat)
+
+mod1 <- lm(AdjSalePrice ~ Bathrooms, data = dat)
+
+summary(mod1)
+
+boxplot(AdjSalePrice ~ Bathrooms, data = dat)
+
+output_stargazer("../Results/Bathrooms_BldgGrade.tex", appendVal = FALSE, mod1,
+                 title="Adjusted Sale Price, Building Grade and Bathrooms",
+                 label="tab:bathrooms_bldGrade",  digits = 6
+)
+
+
+ggplot(dat, aes(AdjSalePrice, Bathrooms, group = BldgGrade)) +
+  geom_point(alpha = 0.5, aes(colour = BldgGrade)) +
+  geom_smooth(method = "lm", aes(colour = BldgGrade))
+
+# separate out effect of gender
+# additive model
+mod2 <- lm(AdjSalePrice ~ Bathrooms + BldgGrade, data = dat)
+
+dat_add <- augment(mod2)
+#stargazer::stargazer(mod1, mod2, type = "html", title = "Salary and Grants, Gender")
+summary(mod2)
+
+ggplot(dat, aes(AdjSalePrice, Bathrooms, group = BldgGrade)) +
+  geom_point(alpha = 0.5, aes(colour = BldgGrade)) +
+  geom_line(data = dat_add, aes(y = .fitted, colour = BldgGrade)) # we change our data to the fitted values of the additive model
+
+output_stargazer("../Results/Bathrooms_BldgGrade.tex", appendVal = FALSE, mod2,
+                 title="Adjusted Sale Price, Building Grade and Bathrooms",
+                 label="tab:bathrooms_bldGrade",  digits = 6
+)
+
+
+mod2 <- lm(AdjSalePrice ~ BldgGrade + SqFtTotLiving, data = dat)
+summary(mod2)
+
+dat %>% ggplot( aes(AdjSalePrice, SqFtTotLiving, group = BldgGrade)) +
+  geom_point(alpha = 0.5, aes(colour = BldgGrade)) +
+  geom_line(data = dat_add, aes(y = .fitted, colour = BldgGrade)) # we change our data to the fitted values of the additive model
+ggsave("../Results/sqftLiving.png")
+
+output_stargazer("../Results/TotLiving_BldgGrade.tex", appendVal = FALSE, mod2,
+                 title="Adjusted Sale Price, Living Space and Building Grade",
+                 label="tab:SqFtTotLiving_bldGrade",  digits = 6
+)
+
