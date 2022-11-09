@@ -75,9 +75,10 @@ output_stargazer("../Results/Bathrooms_BldgGrade.tex", appendVal = FALSE, mod2,
 mod2 <- lm(AdjSalePrice ~ BldgGrade + SqFtTotLiving, data = dat)
 summary(mod2)
 
-dat %>% ggplot( aes(AdjSalePrice, SqFtTotLiving, group = BldgGrade)) +
+dat %>% ggplot( aes(x=dat$SqFtTotLiving, y=AdjSalePrice,  group = BldgGrade)) +
   geom_point(alpha = 0.5, aes(colour = BldgGrade)) +
   geom_line(data = dat_add, aes(y = .fitted, colour = BldgGrade)) # we change our data to the fitted values of the additive model
+
 ggsave("../Results/sqftLiving.png")
 
 output_stargazer("../Results/TotLiving_BldgGrade.tex", appendVal = FALSE, mod2,
