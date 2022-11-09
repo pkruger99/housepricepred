@@ -10,3 +10,6 @@ data <- read.csv("https://raw.githubusercontent.com/gedeck/practical-statistics-
 data <- data %>%
   mutate(Ddate = as.Date(data$DocumentDate))
 
+saveRDS(data, "\relative_path\file.rds")
+
+data <- readRDS("\relative_path\file.rds")
