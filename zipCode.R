@@ -107,7 +107,6 @@ output_stargazer("../Results/week3.tex", appendVal = FALSE, mod4,
 
 stargazer::stargazer(modx, mod4, type = "latex", title = "Price and living space, building grade and ZipCode")
 
-
 with(dat, pairs(~ AdjSalePrice + SqFtTotLiving + BldgGrade + ZipGroup))
 
 
@@ -117,3 +116,7 @@ ggplot(dat, aes(SqFtTotLiving + BldgGrade, y= AdjSalePrice, group = ZipGroup)) +
         ) +
   theme(legend.position = "bottom")
 ggsave("Results/ZipGroup.png")
+
+for (i in seq(7,22)) {
+  boxplot(dat[i], xlab=colnames(dat[i]) )
+}
