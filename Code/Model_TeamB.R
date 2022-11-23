@@ -15,7 +15,7 @@ pkgTest <- function(pkg){
 }
 
 # load necessary packages
-lapply(c("ggplot2", "stargazer", "tidyverse", "stringr", "broom"),  pkgTest)
+lapply(c("ggplot2", "stargazer", "tidyverse", "stringr", "broom", "plotly", "car"),  pkgTest)
 
 # Load training data
 train <- readRDS("data/train.rds")
